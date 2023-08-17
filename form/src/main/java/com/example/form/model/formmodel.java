@@ -1,5 +1,7 @@
 package com.example.form.model;
 
+import com.example.form.service.i;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -18,4 +20,6 @@ public class formmodel {
     @Id
     public String name;
     public String email;
+    public String password;
+    public String cnfmpassword;
 }

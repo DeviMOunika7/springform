@@ -12,8 +12,10 @@ public interface formrepo extends JpaRepository<formmodel, String>{
     //Iterator<formmodel> iterator();
 
     Optional<formmodel> findByName(String name);
-
+    
     void deleteByName(String name);
+
+    Optional<formmodel> findByEmail(String email);
 
     
     

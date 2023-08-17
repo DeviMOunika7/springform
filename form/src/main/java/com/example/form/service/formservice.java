@@ -7,7 +7,7 @@ import java.util.Optional;
 //import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.method.P;
+
 import org.springframework.stereotype.Service;
 
 import com.example.form.model.formmodel;
@@ -33,8 +33,14 @@ public class formservice {
 
   public String save(formmodel formmodel)
  {
+     if(formmodel.getPassword().equals(formmodel.getCnfmpassword()))
+     {
     formrepo.save(formmodel);
     return "done";
+     }
+     else {
+      return "password and cnfmpassword are not matching";
+     }
  }
 
     
@@ -53,6 +59,41 @@ public class formservice {
       
     }
 
+    
+
+
+    public String logincheck(String name, String password) {
+      Optional<formmodel> opname = formrepo.findByName(name);
+       if(opname.isPresent()) {
+         formmodel person = opname.get();
+         if(person.getPassword().equals(password))
+         return "login successfully";
+         else {
+            return "incorrect password";
+         }
+       }
+      
+         return "user doesnot exists";
+       
+    }
+
+
+   public String updateUser(String name,formmodel formmodel) {
+   Optional<formmodel>op = formrepo.findByName(name);
+   if(op.isPresent()) {
+      formmodel person = op.get();
+      person.setName(formmodel.getName());
+      person.setPassword(formmodel.getPassword());
+      person.setCnfmpassword(formmodel.getCnfmpassword());
+      formrepo.save(person);
+      return person.getName()+" updated successfully";
+   }
+   return "user doesnot exists";
+   }
+
+
+   
+    
     
 
 

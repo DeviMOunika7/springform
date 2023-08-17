@@ -36,11 +36,17 @@ public class formcontroller {
         return "mouni";
     }
 
-     @GetMapping(path="/formcheck")
+    @GetMapping(path="/formcheck")
+    public String userlogin(formmodel formmodel) {
+        return "loginform";
+    }
 
-    public String registering(formmodel formmodel) {
+    @GetMapping(path="/registercheck")
+    public String userregistering(formmodel formmodel) {
         return "registrationform";
     }
+
+   
 
     /*@PostMapping(path="/signup")
     @ResponseBody
@@ -58,8 +64,8 @@ public class formcontroller {
     @PostMapping(path="/signup")
     @ResponseBody
      public String saving(@ModelAttribute("formmodel") formmodel formmodel) {
-        formservice.save(formmodel);
-        return "user data saved successfully";
+        return formservice.save(formmodel);
+       
      }
 
     @GetMapping(path="/getUsers")
@@ -74,12 +80,24 @@ public class formcontroller {
         return "deletionform";
     }
 
-    @DeleteMapping(path="/deleteUser")
+    @PostMapping(path="/deleteUser")
     @ResponseBody
     public String deleteUser(@ModelAttribute("name") String name) {
         
     formservice.deleteUser(name);
     return "deleted";
     }
+
+    @PostMapping(path="/login")
+    @ResponseBody
+    public String logincheck(@RequestParam String name , @RequestParam String password) {
+        return formservice.logincheck(name , password);
+    }
     
+   @PostMapping(path="/updateUser/{name}")
+    @ResponseBody
+    public String updateUser(@PathVariable("name") String name,formmodel formmodel ) {
+    return formservice.updateUser(name,formmodel);
+
+    }
 }
