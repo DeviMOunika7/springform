@@ -9,6 +9,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.example.form.model.formmodel;
 import com.example.form.repo.formrepo;
@@ -48,19 +49,19 @@ public class formservice {
        return formrepo.findAll();
     }
 
-   public String deleteUser(String name) {
-      Optional<formmodel> op = formrepo.findByName(name);
+
+   public String deleteUser(String email) {
+      Optional<formmodel> op = formrepo.findByEmail(email);
       if(op.isPresent()) {
          formmodel deletedUser = op.get();
          formrepo.delete(deletedUser);
-         return name+" is deleted";
+         return deletedUser.getName()+" is deleted";
       }
       return "user doesnot exists";
       
     }
 
     
-
 
     public String logincheck(String name, String password) {
       Optional<formmodel> opname = formrepo.findByName(name);
@@ -78,8 +79,23 @@ public class formservice {
     }
 
 
-   public String updateUser(String name,formmodel formmodel) {
-   Optional<formmodel>op = formrepo.findByName(name);
+   /* public String updateUser(String email ,formmodel formmodel) {
+   Optional<formmodel>op = formrepo.findByEmail(email);
+   if(op.isPresent()) {
+      formmodel person = op.get();
+      
+      person.setEmail(formmodel.getEmail());
+      person.setName(formmodel.getName());
+      person.setPassword(formmodel.getPassword());
+      person.setCnfmpassword(formmodel.getCnfmpassword());
+      formrepo.save(person);
+      return person.getName()+" updated successfully";
+   }
+   return "user doesnot exists";
+   }*/
+
+    public String updateUser(formmodel formmodel) {
+   Optional<formmodel>op = formrepo.findByEmail(formmodel.getEmail());
    if(op.isPresent()) {
       formmodel person = op.get();
       person.setName(formmodel.getName());
@@ -89,13 +105,14 @@ public class formservice {
       return person.getName()+" updated successfully";
    }
    return "user doesnot exists";
-   }
-
-
    
-    
-    
+}
+   
 
-
+public ModelAndView getAllEmployees() {
+		ModelAndView mav = new ModelAndView("usertable");
+		mav.addObject("employees", formrepo.findAll());
+		return mav;
+	}
     
 }

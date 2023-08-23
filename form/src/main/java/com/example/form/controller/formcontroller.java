@@ -1,6 +1,7 @@
 package com.example.form.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.example.form.model.formmodel;
 import com.example.form.repo.formrepo;
@@ -82,10 +84,9 @@ public class formcontroller {
 
     @PostMapping(path="/deleteUser")
     @ResponseBody
-    public String deleteUser(@ModelAttribute("name") String name) {
-        
-    formservice.deleteUser(name);
-    return "deleted";
+    public String deleteUser(@ModelAttribute("email") String email) {    
+    return formservice.deleteUser(email);
+
     }
 
     @PostMapping(path="/login")
@@ -94,10 +95,24 @@ public class formcontroller {
         return formservice.logincheck(name , password);
     }
     
-   @PostMapping(path="/updateUser/{name}")
+    @GetMapping(path="/updatecheck")
+    public String updatecheck() {
+        return "updation";
+    }
+
+    @GetMapping(path="/getAllUsers")
+	public ModelAndView getAllEmployees() {
+		//ModelAndView mav = new ModelAndView("usertable");
+		//mav.addObject("employees", formrepo.findAll());
+		return formservice.getAllEmployees();
+	}
+
+    
+
+   @PostMapping(path="/updateUser")
     @ResponseBody
-    public String updateUser(@PathVariable("name") String name,formmodel formmodel ) {
-    return formservice.updateUser(name,formmodel);
+    public String updateUser(@ModelAttribute("formmodel") formmodel formmodel) {
+    return formservice.updateUser(formmodel);
 
     }
 }
